@@ -47,7 +47,7 @@ public final class GiphyRepository: GIFRepository {
     private func search(query: String, page: Int) async throws -> [GIF] {
         let result: GiphySearchResultDTO = try await giphyNetworkService.request(
             domain: "https://api.giphy.com/v1/gifs",
-            path: "search",
+            path: "/search",
             method: .get,
             parameters: [
                 "api_key": apiKey,
