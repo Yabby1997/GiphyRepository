@@ -14,7 +14,7 @@ let package = Package(
             targets: ["GiphyRepository"]),
     ],
     dependencies: [
-         .package(url: "https://github.com/Yabby1997/GIFPediaService", from: "0.2.1"),
+         .package(url: "https://github.com/Yabby1997/GIFPediaService", from: "0.2.2"),
     ],
     targets: [
         .target(
