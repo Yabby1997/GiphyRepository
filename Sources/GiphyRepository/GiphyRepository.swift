@@ -7,16 +7,17 @@
 
 import Foundation
 import GIFPediaService
+import SHNetworkServiceInterface
 
 public final class GiphyRepository: GIFRepository {
-    private let giphyNetworkService: GiphyNetworkService
+    private let networkService: SHNetworkServiceInterface
     private let apiKey: String
     private let limit: Int
     private var latestQuery: String = ""
     private var nextPage: Int = .zero
 
-    public init(giphyNetworkService: GiphyNetworkService, apiKey: String, limit: Int = 100) {
-        self.giphyNetworkService = giphyNetworkService
+    public init(networkService: SHNetworkServiceInterface, apiKey: String, limit: Int = 100) {
+        self.networkService = networkService
         self.apiKey = apiKey
         self.limit = limit
     }
@@ -45,7 +46,7 @@ public final class GiphyRepository: GIFRepository {
     }
 
     private func search(query: String, page: Int) async throws -> [GIF] {
-        let result: GiphySearchResultDTO = try await giphyNetworkService.request(
+        let result: GiphySearchResultDTO = try await networkService.request(
             domain: "https://api.giphy.com/v1/gifs",
             path: "/search",
             method: .get,

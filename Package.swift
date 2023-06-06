@@ -15,12 +15,14 @@ let package = Package(
     ],
     dependencies: [
          .package(url: "https://github.com/Yabby1997/GIFPediaService", from: "0.2.2"),
+         .package(url: "https://github.com/Yabby1997/SHNetworkServiceInterface", from: "0.1.0"),
     ],
     targets: [
         .target(
             name: "GiphyRepository",
             dependencies: [
-                .product(name: "GIFPediaService", package: "GIFPediaService")
+                .product(name: "GIFPediaService", package: "GIFPediaService"),
+                .product(name: "SHNetworkServiceInterface", package: "SHNetworkServiceInterface"),
             ]),
     ]
 )
