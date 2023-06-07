@@ -14,7 +14,7 @@ public final class GiphyRepository: GIFRepository {
     private let apiKey: String
     private let limit: Int
     private var latestQuery: String = ""
-    private var nextPage: Int = .zero
+    private var offset: Int = .zero
 
     public init(networkService: SHNetworkServiceInterface, apiKey: String, limit: Int = 100) {
         self.networkService = networkService
@@ -24,9 +24,9 @@ public final class GiphyRepository: GIFRepository {
 
     public func search(query: String) async -> [GIF] {
         do {
-            let results = try await search(query: query, page: .zero)
+            let results = try await search(query: query, offset: .zero)
             latestQuery = query
-            nextPage = 1
+            offset = results.count
             return results
         } catch {
             dump(error.localizedDescription)
@@ -36,8 +36,8 @@ public final class GiphyRepository: GIFRepository {
 
     public func requestNext() async -> [GIF] {
         do {
-            let results = try await search(query: latestQuery, page: nextPage)
-            nextPage += 1
+            let results = try await search(query: latestQuery, offset: offset)
+            offset += results.count
             return results
         } catch {
             dump(error.localizedDescription)
@@ -45,7 +45,7 @@ public final class GiphyRepository: GIFRepository {
         }
     }
 
-    private func search(query: String, page: Int) async throws -> [GIF] {
+    private func search(query: String, offset: Int) async throws -> [GIF] {
         let result: GiphySearchResultDTO = try await networkService.request(
             domain: "https://api.giphy.com/v1/gifs",
             path: "/search",
@@ -54,7 +54,7 @@ public final class GiphyRepository: GIFRepository {
                 "api_key": apiKey,
                 "q": query,
                 "limit": "\(limit)",
-                "offset": "\(page)",
+                "offset": "\(offset)",
                 "rating": "g",
                 "lang": "en"
             ],
