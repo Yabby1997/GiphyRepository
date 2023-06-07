@@ -37,7 +37,7 @@ public final class GiphyRepository: GIFRepository {
     public func requestNext() async -> [GIF] {
         do {
             let results = try await search(query: latestQuery, page: nextPage)
-            nextPage = 1
+            nextPage += 1
             return results
         } catch {
             dump(error.localizedDescription)
