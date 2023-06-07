@@ -54,7 +54,7 @@ public final class GiphyRepository: GIFRepository {
                 "api_key": apiKey,
                 "q": query,
                 "limit": "\(limit)",
-                "pageOffset": "\(page)",
+                "offset": "\(page)",
                 "rating": "g",
                 "lang": "en"
             ],
