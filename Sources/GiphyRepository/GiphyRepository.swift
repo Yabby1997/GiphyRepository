@@ -22,7 +22,7 @@ public final class GiphyRepository: GIFRepository {
         self.limit = limit
     }
 
-    public func search(query: String) async -> [GIF] {
+    public func search(query: String) async -> [GIFEntity] {
         do {
             let results = try await search(query: query, offset: .zero)
             latestQuery = query
@@ -34,7 +34,7 @@ public final class GiphyRepository: GIFRepository {
         }
     }
 
-    public func requestNext() async -> [GIF] {
+    public func requestNext() async -> [GIFEntity] {
         do {
             let results = try await search(query: latestQuery, offset: offset)
             offset += results.count
@@ -45,7 +45,7 @@ public final class GiphyRepository: GIFRepository {
         }
     }
 
-    private func search(query: String, offset: Int) async throws -> [GIF] {
+    private func search(query: String, offset: Int) async throws -> [GIFEntity] {
         let result: GiphySearchResultDTO = try await networkService.request(
             domain: "https://api.giphy.com/v1/gifs",
             path: "/search",
@@ -62,10 +62,10 @@ public final class GiphyRepository: GIFRepository {
             body: nil
         )
 
-        return result.data.compactMap { dto -> GIF? in
+        return result.data.compactMap { dto -> GIFEntity? in
             guard let thumbnailUrl = dto.images.thumbnail,
                   let originalUrl = dto.images.original else { return nil }
-            return GIF(
+            return GIFEntity(
                 id: "Giphy_\(dto.id)",
                 title: dto.title,
                 thumbnailUrl: thumbnailUrl,
